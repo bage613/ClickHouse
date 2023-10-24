@@ -186,6 +186,7 @@ if (BUILD_STANDALONE_KEEPER)
             ch_contrib::abseil_swiss_tables
             ch_contrib::nuraft
             ch_contrib::lz4
+            ch_contrib::aocl-compression
             ch_contrib::zstd
             ch_contrib::cityhash
             ch_contrib::jemalloc

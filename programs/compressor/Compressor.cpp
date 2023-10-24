@@ -81,6 +81,7 @@ int mainEntryClickHouseCompressor(int argc, char ** argv)
             ("hc", "use LZ4HC instead of LZ4")
             ("zstd", "use ZSTD instead of LZ4")
             ("deflate_qpl", "use deflate_qpl instead of LZ4")
+            ("aocl", "use aocl instead of LZ4")
             ("codec", po::value<std::vector<std::string>>()->multitoken(), "use codecs combination instead of LZ4")
             ("level", po::value<int>(), "compression level for codecs specified via flags")
             ("none", "use no compression instead of LZ4")
@@ -107,6 +108,7 @@ int mainEntryClickHouseCompressor(int argc, char ** argv)
         bool use_lz4hc = options.count("hc");
         bool use_zstd = options.count("zstd");
         bool use_deflate_qpl = options.count("deflate_qpl");
+        bool use_aocl = options.count("aocl");
         bool stat_mode = options.count("stat");
         bool use_none = options.count("none");
         print_stacktrace = options.count("stacktrace");
@@ -115,7 +117,7 @@ int mainEntryClickHouseCompressor(int argc, char ** argv)
         if (options.count("codec"))
             codecs = options["codec"].as<std::vector<std::string>>();
 
-        if ((use_lz4hc || use_zstd || use_deflate_qpl || use_none) && !codecs.empty())
+        if ((use_lz4hc || use_zstd || use_deflate_qpl || use_aocl || use_none) && !codecs.empty())
             throw Exception(ErrorCodes::BAD_ARGUMENTS, "Wrong options, codec flags like --zstd and --codec options are mutually exclusive");
 
         if (!codecs.empty() && options.count("level"))
@@ -129,6 +131,8 @@ int mainEntryClickHouseCompressor(int argc, char ** argv)
             method_family = "ZSTD";
         else if (use_deflate_qpl)
             method_family = "DEFLATE_QPL";
+        else if (use_aocl)
+            method_family = "AOCL_LZ4";
         else if (use_none)
             method_family = "NONE";
 

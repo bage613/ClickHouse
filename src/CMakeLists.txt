@@ -377,6 +377,7 @@ dbms_target_link_libraries (
         clickhouse_dictionaries_embedded
         clickhouse_parsers
         ch_contrib::lz4
+        ch_contrib::aocl-compression
         Poco::JSON
         string_utils
     PUBLIC
