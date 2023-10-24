@@ -1,0 +1,107 @@
+# lz4 is the main compression method, cannot be disabled.
+
+string(TIMESTAMP TODAY "%Y%m%d")
+add_compile_definitions(AOCL_BUILD_VERSION="Build ${TODAY}")
+set (LIBRARY_DIR "${ClickHouse_SOURCE_DIR}/contrib/aocl-compression")
+SET(Sources
+   "${LIBRARY_DIR}/utils/utils.cpp" 
+    "${LIBRARY_DIR}/api/codec.cpp"
+    "${LIBRARY_DIR}/api/api.cpp" 
+    "${LIBRARY_DIR}/algos/lz4/lz4.c"
+#LZMA_SRC_FILES    
+    "${LIBRARY_DIR}/algos/lzma/LzFind.c"
+	"${LIBRARY_DIR}/algos/lzma/LzmaDec.c"
+	"${LIBRARY_DIR}/algos/lzma/LzmaEnc.c"
+	"${LIBRARY_DIR}/algos/lzma/Alloc.c"
+#BZIP2_SRC_FILES
+    "${LIBRARY_DIR}/algos/bzip2/blocksort.c"
+	"${LIBRARY_DIR}/algos/bzip2/huffman.c"
+	"${LIBRARY_DIR}/algos/bzip2/crctable.c"
+	"${LIBRARY_DIR}/algos/bzip2/randtable.c"
+	"${LIBRARY_DIR}/algos/bzip2/compress.c"
+	"${LIBRARY_DIR}/algos/bzip2/decompress.c"
+	"${LIBRARY_DIR}/algos/bzip2/bzlib.c"
+#SNAPPY_SRC_FILES
+	"${LIBRARY_DIR}/algos/snappy/snappy-sinksource.cc"
+	"${LIBRARY_DIR}/algos/snappy/snappy-stubs-internal.cc"
+	"${LIBRARY_DIR}/algos/snappy/snappy.cc"
+#ZLIB_SRC_FILES
+	"${LIBRARY_DIR}/algos/zlib/adler32.c"
+	"${LIBRARY_DIR}/algos/zlib/adler32_x86.c"
+	"${LIBRARY_DIR}/algos/zlib/compress.c"
+	"${LIBRARY_DIR}/algos/zlib/crc32.c"
+	"${LIBRARY_DIR}/algos/zlib/deflate.c"
+	"${LIBRARY_DIR}/algos/zlib/deflate_medium.c"
+	"${LIBRARY_DIR}/algos/zlib/deflate_quick.c"
+	"${LIBRARY_DIR}/algos/zlib/gzclose.c"
+	"${LIBRARY_DIR}/algos/zlib/gzlib.c"
+	"${LIBRARY_DIR}/algos/zlib/gzread.c"
+	"${LIBRARY_DIR}/algos/zlib/gzwrite.c"
+	"${LIBRARY_DIR}/algos/zlib/infback.c"
+	"${LIBRARY_DIR}/algos/zlib/inffast.c"
+	"${LIBRARY_DIR}/algos/zlib/inffast_chunk.c"
+	"${LIBRARY_DIR}/algos/zlib/inflate.c"
+	"${LIBRARY_DIR}/algos/zlib/inftrees.c"
+	"${LIBRARY_DIR}/algos/zlib/longest_match_x86.c"
+	"${LIBRARY_DIR}/algos/zlib/slide_hash_x86.c"
+	"${LIBRARY_DIR}/algos/zlib/trees.c"
+	"${LIBRARY_DIR}/algos/zlib/uncompr.c"
+	"${LIBRARY_DIR}/algos/zlib/zutil.c"
+#ZSTD_SRC_FILES
+	"${LIBRARY_DIR}/algos/zstd/lib/common/zstd_common.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/fse_decompress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/xxhash.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/error_private.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/entropy_common.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/pool.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/debug.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/common/threading.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_compress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_compress_literals.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_compress_sequences.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_compress_superblock.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstdmt_compress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_double_fast.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_fast.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_lazy.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_ldm.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/zstd_opt.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/fse_compress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/huf_compress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/compress/hist.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/decompress/zstd_decompress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/decompress/huf_decompress.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/decompress/zstd_ddict.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/decompress/zstd_decompress_block.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/dictBuilder/cover.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/dictBuilder/divsufsort.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/dictBuilder/fastcover.c"
+	"${LIBRARY_DIR}/algos/zstd/lib/dictBuilder/zdict.c"
+	
+)
+SET(Headers
+    "${LIBRARY_DIR}/utils/utils.h"    
+    "${LIBRARY_DIR}/api/types.h"
+    "${LIBRARY_DIR}/api/codec.h"    
+    "${LIBRARY_DIR}/api/aocl_compression.h"
+    "${LIBRARY_DIR}/algos/lz4/lz4.h"    
+    "${LIBRARY_DIR}/algos/lzma/Alloc.h"
+	"${LIBRARY_DIR}/algos/lzma/LzmaDec.h"
+	"${LIBRARY_DIR}/algos/lzma/LzmaEnc.h"
+	"${LIBRARY_DIR}/algos/lzma/LzFind.h"
+    "${LIBRARY_DIR}/algos/bzip2/bzlib.h"
+    "${LIBRARY_DIR}/algos/snappy/snappy.h"
+    "${LIBRARY_DIR}/algos/zlib/zlib.h"
+    "${LIBRARY_DIR}/algos/zstd/lib/zstd.h"
+)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mavx -msse4 -msse4.1 -msse4.2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx -msse4 -msse4.1 -msse4.2")
+add_library (_aocl_compression ${Sources} ${Headers})
+add_library (ch_contrib::aocl-compression ALIAS _aocl_compression)
+
+target_compile_definitions (_aocl_compression PUBLIC LZ4_DISABLE_DEPRECATE_WARNINGS=1)
+target_compile_definitions (_aocl_compression PUBLIC LZ4_FAST_DEC_LOOP=1)
+if (SANITIZE STREQUAL "undefined")
+    target_compile_options (_aocl_compression PRIVATE -fno-sanitize=undefined)
+endif ()
+target_include_directories(_aocl_compression PUBLIC ${LIBRARY_DIR})

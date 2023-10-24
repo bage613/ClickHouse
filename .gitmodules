@@ -351,3 +351,6 @@
 [submodule "contrib/aklomp-base64"]
 	path = contrib/aklomp-base64
 	url = https://github.com/aklomp/base64.git
+[submodule "contrib/aocl-compression"]
+	path = contrib/aocl-compression
+	url = https://github.com/bage613/aocl-compression.git
